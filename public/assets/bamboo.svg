@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- Bamboo silhouette: stalks + leaves, drawn as a subtle dark watermark -->
+  <g fill="none" stroke="#7c6a4a" stroke-opacity="0.18" stroke-linecap="round">
+    <!-- stalk 1 (left, tall) -->
+    <path d="M60 620 C62 500 58 420 64 300 C68 200 60 140 66 40"
+          stroke-width="9"/>
+    <path d="M60 620 C62 500 58 420 64 300 C68 200 60 140 66 40"
+          stroke-width="2" stroke="#8a7444" stroke-opacity="0.14"/>
+    <!-- stalk joints 1 -->
+    <path d="M50 520 H80" stroke-width="3"/>
+    <path d="M52 400 H82" stroke-width="3"/>
+    <path d="M54 260 H86" stroke-width="3"/>
+    <path d="M56 130 H88" stroke-width="3"/>
+    <!-- stalk 2 (right) -->
+    <path d="M560 620 C555 520 562 440 556 340 C552 240 560 160 552 70"
+          stroke-width="8"/>
+    <path d="M548 500 H578" stroke-width="3"/>
+    <path d="M550 360 H580" stroke-width="3"/>
+    <path d="M550 220 H578" stroke-width="3"/>
+    <!-- stalk 3 (lower left, short) -->
+    <path d="M180 620 C176 560 184 480 178 400" stroke-width="7"/>
+    <path d="M174 520 H202" stroke-width="3"/>
+  </g>
+  <!-- leaves -->
+  <g fill="#8a7444" fill-opacity="0.16">
+    <ellipse cx="120" cy="120" rx="34" ry="8" transform="rotate(-40 120 120)"/>
+    <ellipse cx="95" cy="95" rx="30" ry="7" transform="rotate(-15 95 95)"/>
+    <ellipse cx="150" cy="90" rx="32" ry="7" transform="rotate(-60 150 90)"/>
+    <ellipse cx="40" cy="185" rx="28" ry="6" transform="rotate(25 40 185)"/>
+    <ellipse cx="30" cy="70" rx="26" ry="6" transform="rotate(-30 30 70)"/>
+
+    <ellipse cx="500" cy="140" rx="34" ry="8" transform="rotate(-130 500 140)"/>
+    <ellipse cx="540" cy="110" rx="30" ry="7" transform="rotate(-165 540 110)"/>
+    <ellipse cx="470" cy="95" rx="32" ry="7" transform="rotate(-100 470 95)"/>
+    <ellipse cx="575" cy="200" rx="28" ry="6" transform="rotate(155 575 200)"/>
+    <ellipse cx="585" cy="80" rx="26" ry="6" transform="rotate(-135 585 80)"/>
+
+    <ellipse cx="225" cy="430" rx="30" ry="7" transform="rotate(-50 225 430)"/>
+    <ellipse cx="205" cy="400" rx="26" ry="6" transform="rotate(-20 205 400)"/>
+    <ellipse cx="200" cy="500" rx="28" ry="6" transform="rotate(-60 200 500)"/>
+  </g>
+</svg>
