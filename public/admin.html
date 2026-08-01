@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>管理后台 | 纪念 · 永怀</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body data-page="admin">
+
+<!-- ======= LOGIN ======= -->
+<div class="login-wrap" id="loginWrap">
+  <form class="login-card" id="loginForm">
+    <div class="login-logo">🔐</div>
+    <h1>管理后台登录</h1>
+    <p class="login-sub">纪念 · 永怀 内容管理系统</p>
+    <label>管理员账号</label>
+    <input id="loginUser" autocomplete="username" placeholder="请输入账号">
+    <label>密码</label>
+    <input id="loginPass" type="password" autocomplete="current-password" placeholder="请输入密码">
+    <div class="login-err" id="loginErr"></div>
+    <button class="btn-main" id="loginBtn">登 录</button>
+    <a class="back-home" href="/">← 返回纪念主页</a>
+  </form>
+</div>
+
+<!-- ======= PANEL ======= -->
+<div class="admin-shell" id="adminShell" hidden>
+  <aside class="admin-side">
+    <div class="side-brand">纪念后台</div>
+    <nav class="side-nav">
+      <button class="nav-item active" data-tab="dashboard">📊 概览 / 流量</button>
+      <button class="nav-item" data-tab="admins">👥 管理员管理</button>
+      <button class="nav-item" data-tab="design">🎨 页面设计</button>
+      <button class="nav-item" data-tab="content">📝 内容管理</button>
+      <button class="nav-item" data-tab="review">✅ 留言审核</button>
+    </nav>
+    <div class="side-user">
+      <div id="adminUser">管理员</div>
+      <button id="logoutBtn">退出</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <!-- Dashboard -->
+    <section class="tab-panel active" id="tab-dashboard">
+      <h2>流量与活动监控</h2>
+      <div class="stat-grid">
+        <div class="stat"><b id="stTotal">0</b><span>累计访问</span></div>
+        <div class="stat"><b id="stToday">0</b><span>今日访问</span></div>
+        <div class="stat"><b id="stViews">0</b><span>主页浏览量</span></div>
+        <div class="stat"><b id="stPending">0</b><span>待审核留言</span></div>
+      </div>
+      <h3>页面访问分布</h3>
+      <div class="route-list" id="routeList"></div>
+      <h3>最近访问记录</h3>
+      <div class="table-scroll"><table id="trafficTable">
+        <thead><tr><th>时间</th><th>路径</th><th>IP</th><th>设备</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </section>
+
+    <!-- Admins -->
+    <section class="tab-panel" id="tab-admins">
+      <h2>管理员管理</h2>
+      <p class="tab-hint">您可以添加新的管理员账号（至少6位密码）。</p>
+      <div class="form-row">
+        <input id="newAdminUser" placeholder="新管理员账号">
+        <input id="newAdminPass" placeholder="新密码（≥6位）">
+        <button class="btn-main sm" id="addAdminBtn">添加管理员</button>
+      </div>
+      <div id="adminMsg" class="form-msg"></div>
+      <h3>现有管理员</h3>
+      <div class="table-scroll"><table id="adminTable">
+        <thead><tr><th>ID</th><th>账号</th><th>创建时间</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </section>
+
+    <!-- Design -->
+    <section class="tab-panel" id="tab-design">
+      <h2>页面设计与布局</h2>
+      <p class="tab-hint">修改以下内容即时保存，公开主页将同步更新。</p>
+      <div class="form-grid">
+        <div class="fld grp">
+          <label>站点标题</label><input id="ds_site_title">
+        </div>
+        <div class="fld grp">
+          <label>纪念主题文字</label><input id="ds_hero_title">
+        </div>
+        <div class="fld">
+          <label>主题副标题</label><input id="ds_hero_sub">
+        </div>
+        <div class="fld">
+          <label>头像图片 URL（可选）</label><input id="ds_hero_image" placeholder="https://… 或 /uploads/…">
+        </div>
+        <div class="fld grp">
+          <label>生平简介标题</label><input id="ds_about_title">
+        </div>
+        <div class="fld grp">
+          <label>思念之墙标题</label><input id="ds_memorywall_title">
+        </div>
+        <div class="fld grp">
+          <label>相册标题</label><input id="ds_gallery_title">
+        </div>
+        <div class="fld">
+          <label>Memorial Maintained By</label><input id="ds_maintained_by">
+        </div>
+        <div class="fld grp">
+          <label>主题色</label><input type="color" id="ds_accent" style="height:44px;padding:4px">
+        </div>
+        <div class="fld grp">
+          <label>界面明暗</label>
+          <select id="ds_tone"><option value="light">浅色</option><option value="dark">深色</option></select>
+        </div>
+        <div class="fld">
+          <label>正文样式</label>
+          <select id="ds_font"><option value="serif">衬线（典雅）</option><option value="sans">无衬线（现代）</option></select>
+        </div>
+      </div>
+      <div class="fld">
+        <label>生平简介正文</label>
+        <textarea id="ds_about_body" rows="6"></textarea>
+        <div class="note">每行一段，将替换首页「生平简介」的内容。</div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-main" id="saveDesignBtn">💾 保存设计</button>
+        <button class="btn-ghost" id="resetDesignBtn">恢复默认</button>
+      </div>
+      <div id="designMsg" class="form-msg"></div>
+    </section>
+
+    <!-- Content -->
+    <section class="tab-panel" id="tab-content">
+      <h2>内容管理（直接发布，无需审核）</h2>
+      <p class="tab-hint">以管理员身份直接向任意板块添加内容，即时生效。</p>
+      <div class="form-row v">
+        <label>选择板块</label>
+        <select id="cc_section">
+          <option value="about">生平简介（段落）</option>
+          <option value="timeline">时间线（JSON）</option>
+          <option value="gallery">相册（JSON）</option>
+        </select>
+      </div>
+      <div class="form-row v">
+        <label>内容</label>
+        <textarea id="cc_content" rows="6" placeholder="普通文本，或 JSON（时间线/相册）"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-main" id="addContentBtn">➕ 直接发布</button>
+      </div>
+      <div id="ccMsg" class="form-msg"></div>
+      <h3>帮助：时间线 &amp; 相册 JSON 格式</h3>
+      <pre class="json-help">时间线:  [{"year":"1960","title":"标题","text":"描述"}]
+相册:   [{"src":"/uploads/a.jpg","caption":"说明"}]</pre>
+    </section>
+
+    <!-- Review -->
+    <section class="tab-panel" id="tab-review">
+      <h2>留言审核（来自「留下思念」）</h2>
+      <p class="tab-hint">所有用户提交的思念将进入此队列，您可以选择发布或拒绝。</p>
+      <div class="filter-row">
+        <button class="chip active" data-f="all">全部</button>
+        <button class="chip" data-f="pending">待审核</button>
+        <button class="chip" data-f="published">已发布</button>
+        <button class="chip" data-f="rejected">已拒绝</button>
+      </div>
+      <div id="reviewList"></div>
+    </section>
+  </main>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>纪念 · 永怀 | 网上纪念</title>
+<meta name="description" content="以温暖的方式，留住每一份思念。">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body data-page="home">
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="/" id="brand">纪念 · 永怀</a>
+    <nav class="topnav-links">
+      <a href="#about">生平简介</a>
+      <a href="#timeline">时间线</a>
+      <a href="#memorywall">思念之墙</a>
+      <a href="#gallery">相册</a>
+      <a class="topnav-cta" href="/memo">写下思念</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-avatar" id="heroAvatar"></div>
+    <h1 class="hero-title" id="heroTitle">永远的怀念</h1>
+    <p class="hero-sub" id="heroSub">以温暖的方式，留住每一份思念</p>
+    <div class="hero-dates">生命有涯 · 思念无期</div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="layout">
+    <!-- left: main sections (left-nav + content, like the original) -->
+    <section class="content-main">
+      <div class="page-layout">
+        <nav class="sect-nav" aria-label="板块导航">
+          <a class="sect-link active" href="#about" data-tab="about"><span class="cn">壹</span>生平简介</a>
+          <a class="sect-link" href="#timeline" data-tab="timeline"><span class="cn">贰</span>时间线</a>
+          <a class="sect-link" href="#memorywall" data-tab="memorywall"><span class="cn">叁</span>思念之墙</a>
+          <a class="sect-link" href="#gallery" data-tab="gallery"><span class="cn">肆</span>相册</a>
+        </nav>
+
+        <div class="sect-content">
+          <div class="sect-panel active" id="panel-about" data-panel="about">
+            <h2 class="sect-heading" id="aboutTitle">生平简介</h2>
+            <div class="panel">
+              <div class="about-body" id="aboutBody"></div>
+            </div>
+          </div>
+
+          <div class="sect-panel" id="panel-timeline" data-panel="timeline" hidden>
+            <h2 class="sect-heading">时间线</h2>
+            <div class="panel"><div class="timeline" id="timelineWrap"></div></div>
+          </div>
+
+          <div class="sect-panel" id="panel-memorywall" data-panel="memorywall" hidden>
+            <h2 class="sect-heading" id="wallTitle">思念之墙</h2>
+            <div class="wall-grid" id="wallGrid"></div>
+          </div>
+
+          <div class="sect-panel" id="panel-gallery" data-panel="gallery" hidden>
+            <h2 class="sect-heading" id="galleryTitle">相册</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- right: memorial sidebar -->
+    <aside class="sidebar">
+      <div class="side-card">
+        <button class="side-btn btn-leave" onclick="location.href='/memo'">✉️ 留下思念</button>
+        <button class="side-btn btn-share" onclick="shareLink()">🔗 分享</button>
+        <div class="side-views">累计访问 <b id="viewCount">0</b> 次</div>
+        <div class="side-note">愿思念被温柔地安放</div>
+      </div>
+      <div class="side-card">
+        <div class="side-maintain">
+          <b>Memorial Maintained By</b>
+          <span id="maintainedBy">纪念网站管理团队</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>纪念 · 永怀 — 以温暖的方式，留住每一份思念</div>
+  <div class="pow">Powered by Memorial</div>
+</footer>
+
+<div class="overlay" id="shareOverlay">
+  <div class="popup">
+    <div class="ico">✅</div>
+    <h3>链接已复制</h3>
+    <p id="shareLinkText"></p>
+    <button onclick="closeOverlay()">知道了</button>
+  </div>
+</div>
+
+<script src="/js/app.js?v=3"></script>
+</body>
+</html>
