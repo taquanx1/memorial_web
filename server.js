@@ -78,9 +78,11 @@ const seedEditorial = () => {
   ins.run('about', '谨以此怀念一位我们深爱的人。Ta 用一生的温柔与坚韧，点亮了无数平凡的日子。愿这份思念跨越时光，永远被温柔地安放。', 'txt', 'published');
   ins.run('about', '这里记录着 Ta 走过的路、爱过的人，以及留在我们心中的点滴印记。', 'txt', 'published');
   ins.run('timeline', JSON.stringify([
-    { year: '1960', title: '诞生', text: '在一个平凡的小镇，迎来了新生命。' },
-    { year: '1985', title: '成家', text: '组建了温暖的家庭，把爱传递给了下一代。' },
-    { year: '2010', title: '感恩', text: '用一生的善意，收获了无数朋友的敬爱。' },
+    { year: '1963年3月', title: '出生于北京', text: ' ' },
+    { year: '1986年7月', title: '毕业于清华大学水利工程系', text: ' ' },
+    { year: '1987年', title: '移居泰国', text: ' ' },
+    { year: '1993年', title: '移居海口', text: ' ' },
+    { year: '2016年9月', title: '病故于海口', text: ' ' },
   ]), 'json', 'published');
   ins.run('gallery', JSON.stringify([
     { src: '/assets/photo-1.jpg', caption: '岁月留影 · 一' },
