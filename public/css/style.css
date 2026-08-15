@@ -148,7 +148,7 @@ img{max-width:100%;display:block}
 .tl-text{color:var(--ink-soft);font-size:.95rem}
 
 /* Memory Wall */
-.wall-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+.wall-grid{display:grid;grid-template-columns:1fr;gap:1rem}
 .wall-card{
   background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.3rem;
   display:flex;flex-direction:column;gap:.6rem;
