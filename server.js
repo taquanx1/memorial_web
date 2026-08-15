@@ -75,8 +75,11 @@ const seedEditorial = () => {
   const has = db.prepare('SELECT COUNT(*) c FROM editorial').get().c;
   if (has > 0) return;
   const ins = db.prepare('INSERT INTO editorial (section,content,kind,status) VALUES (?,?,?,?)');
-  ins.run('about', '谨以此怀念一位我们深爱的人。Ta 用一生的温柔与坚韧，点亮了无数平凡的日子。愿这份思念跨越时光，永远被温柔地安放。', 'txt', 'published');
-  ins.run('about', '这里记录着 Ta 走过的路、爱过的人，以及留在我们心中的点滴印记。', 'txt', 'published');
+  ins.run('about', '陈鸿刚，祖籍浙江绍兴，一九六三年出生于北京。一九八六年毕业于北京清华大学水利工程系。', 'txt', 'published');
+  ins.run('about', '大学毕业后曾长期在国外生活和工作，先后在伊拉克和泰国的大中型国际水利承包工程中，从事工程技术、商务谈判等方面的具体工作。在泰国家族式工厂和企业中从事过技术和管理工作。', 'txt', 'published');
+  ins.run('about', '1993年应聘到泰国艺宝集团总公司(COSMO Group of Companies) ,并受命到中国海口创建海南万达包装制造有限公司，并在该公司工作长达20多年，先后任生产部经理，总经理。', 'txt', 'published');
+  ins.run('about', '曾经从事的主要社会工作有：海口市人大常委会华侨外事民族宗教工作委员会委员、海南省侨资企业协会常务理事、海南省工业经济联合会理事、海南省企业家协会会员，清华大学海南校友会秘书长等职。', 'txt', 'published');
+  ins.run('about', '业余时间著有《总经理读〈道德经〉学习笔记》等文稿、书籍。', 'txt', 'published');
   ins.run('timeline', JSON.stringify([
     { year: '1963年3月', title: '出生于北京', text: ' ' },
     { year: '1986年7月', title: '毕业于清华大学水利工程系', text: ' ' },
