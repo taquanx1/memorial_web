@@ -88,10 +88,16 @@ const seedEditorial = () => {
     { year: '2016年9月', title: '病故于海口', text: ' ' },
   ]), 'json', 'published');
   ins.run('gallery', JSON.stringify([
-    { src: '/assets/photo-1.jpg', caption: '岁月留影 · 一' },
-    { src: '/assets/photo-2.jpg', caption: '岁月留影 · 二' },
-    { src: '/assets/photo-3.jpg', caption: '岁月留影 · 三' },
-    { src: '/assets/photo-4.jpg', caption: '岁月留影 · 四' },
+    { src: '/assets/gallery/1 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/2 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/3 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/4 Medium.jpeg', caption: '' },
+
+    { src: '/assets/gallery/5 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/6 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/7 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/8 Medium.jpeg', caption: '' },
+
   ]), 'json', 'published');
 };
 seedEditorial();
