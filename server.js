@@ -88,15 +88,15 @@ const seedEditorial = () => {
     { year: '2016年9月', title: '病故于海口', text: ' ' },
   ]), 'json', 'published');
   ins.run('gallery', JSON.stringify([
-    { src: '/assets/gallery/1 Medium.jpeg', caption: '' },
-    { src: '/assets/gallery/2 Medium.jpeg', caption: '' },
-    { src: '/assets/gallery/3 Medium.jpeg', caption: '' },
-    { src: '/assets/gallery/4 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/1 Medium.jpeg', caption: '清华大学本科期间' },
+    { src: '/assets/gallery/2 Medium.jpeg', caption: '瑞士出差期间' },
+    { src: '/assets/gallery/3 Medium.jpeg', caption: '在出差的飞机上' },
+    { src: '/assets/gallery/4 Medium.jpeg', caption: '伊拉克毕业答辩1' },
 
-    { src: '/assets/gallery/5 Medium.jpeg', caption: '' },
-    { src: '/assets/gallery/6 Medium.jpeg', caption: '' },
-    { src: '/assets/gallery/7 Medium.jpeg', caption: '' },
-    { src: '/assets/gallery/8 Medium.jpeg', caption: '' },
+    { src: '/assets/gallery/5 Medium.jpeg', caption: '伊拉克毕业答辩2' },
+    { src: '/assets/gallery/6 Medium.jpeg', caption: '在海口万达包装1' },
+    { src: '/assets/gallery/7 Medium.jpeg', caption: '在海口万达包装2' },
+    { src: '/assets/gallery/8 Medium.jpeg', caption: '回清华大学' },
 
   ]), 'json', 'published');
 };
