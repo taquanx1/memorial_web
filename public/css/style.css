@@ -54,7 +54,7 @@ img{max-width:100%;display:block}
 }
 .hero-inner{position:relative;z-index:1;max-width:760px}
 .hero-avatar{
-  width:200px;height:300px;border-radius:50%;
+  width:200px;height:300px;border-radius:0;
   margin:0 auto 1.6rem;
   background:linear-gradient(135deg,#3a3529,#221f18);
   border:3px solid rgba(185,161,95,.6);box-shadow:0 0 40px rgba(185,161,95,.25);

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=5">
+<link rel="stylesheet" href="/css/style.css?v=8">
 </head>
 <body data-page="home">
 
@@ -19,7 +19,7 @@
     <a class="brand" href="/" id="brand">梧桐居</a>
     <nav class="topnav-links">
       <a href="#about">生平简介</a>
-      <a href="#timeline">时间线</a>
+      <a href="#timeline" data-jump="timeline">时间线</a>
       <a href="#memorywall">思念之墙</a>
       <a href="#gallery">相册</a>
       <a class="topnav-cta" href="/memo">写下思念</a>
@@ -49,9 +49,8 @@
       <div class="page-layout">
         <nav class="sect-nav" aria-label="板块导航">
           <a class="sect-link active" href="#about" data-tab="about"><span class="cn">壹</span>生平简介</a>
-          <a class="sect-link" href="#timeline" data-tab="timeline"><span class="cn">贰</span>时间线</a>
-          <a class="sect-link" href="#memorywall" data-tab="memorywall"><span class="cn">叁</span>思念之墙</a>
-          <a class="sect-link" href="#gallery" data-tab="gallery"><span class="cn">肆</span>相册</a>
+          <a class="sect-link" href="#memorywall" data-tab="memorywall"><span class="cn">贰</span>思念之墙</a>
+          <a class="sect-link" href="#gallery" data-tab="gallery"><span class="cn">叁</span>相册</a>
         </nav>
 
         <div class="sect-content">
@@ -60,11 +59,11 @@
             <div class="panel">
               <div class="about-body" id="aboutBody"></div>
             </div>
-          </div>
 
-          <div class="sect-panel" id="panel-timeline" data-panel="timeline" hidden>
-            <h2 class="sect-heading">时间线</h2>
-            <div class="panel"><div class="timeline" id="timelineWrap"></div></div>
+            <h2 class="sect-heading" id="timelineTitle">时间线</h2>
+            <div class="panel">
+              <div class="timeline" id="timelineWrap"></div>
+            </div>
           </div>
 
           <div class="sect-panel" id="panel-memorywall" data-panel="memorywall" hidden>
@@ -112,6 +111,6 @@
   </div>
 </div>
 
-<script src="/js/app.js?v=3"></script>
+<script src="/js/app.js?v=5"></script>
 </body>
 </html>
