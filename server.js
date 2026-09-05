@@ -59,7 +59,7 @@ const defaults = {
   site_title: '纪念 · 永怀',
   hero_title: '永远的怀念',
   hero_sub: '以温暖的方式，留住每一份思念',
-  hero_image: '',
+  hero_image: '/assets/profile/profile.jpg',
   about_title: '生平简介',
   about_body: '',
   timeline_data: '',
