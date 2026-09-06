@@ -88,24 +88,39 @@ const seedEditorial = () => {
     { year: '2016年9月', title: '病故于海口', text: ' ' },
   ]), 'json', 'published');
   ins.run('gallery', JSON.stringify([
-    { src: '/assets/gallery/20260820/1.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/2.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/3.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/4.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/5.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/6.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/7.jpg', caption: '' },
 
-    { src: '/assets/gallery/1 Medium.jpeg', caption: '清华大学本科期间' },
-    { src: '/assets/gallery/2 Medium.jpeg', caption: '瑞士出差期间' },
-    { src: '/assets/gallery/3 Medium.jpeg', caption: '在出差的飞机上' },
-    { src: '/assets/gallery/4 Medium.jpeg', caption: '伊拉克毕业答辩1' },
-    { src: '/assets/gallery/5 Medium.jpeg', caption: '伊拉克毕业答辩2' },
+    /* 海口 */
+    { src: '/assets/gallery/20260820/5.jpg', caption: '海洋礼赞号 - 2016.08.06' },
+    { src: '/assets/gallery/20260820/7.jpg', caption: '北京北海公园 - 2008.11.09' },
+    { src: '/assets/gallery/20260820/01.jpeg', caption: '海南海口于安仔 - 2002' },
+    /* { src: '/assets/gallery/8 Medium.jpeg', caption: '北京清华大学 - 1999.04.25' }, */
+    { src: '/assets/gallery/20260820/6.jpg', caption: '海南三亚 - 1998.04.04' },
     { src: '/assets/gallery/6 Medium.jpeg', caption: '在海口万达包装1' },
     { src: '/assets/gallery/7 Medium.jpeg', caption: '在海口万达包装2' },
-    { src: '/assets/gallery/8 Medium.jpeg', caption: '回清华大学' },
 
-    { src: '/assets/gallery/Scan 9 Medium.jpeg', caption: '' },
+    /* 泰国 */
+    { src: '/assets/gallery/20260820/02.jpeg', caption: '泰国曼谷演奏二胡 - 1994.03.05' },
+    { src: '/assets/gallery/20260820/04.jpeg', caption: '泰国曼谷谁工厂 - 1992.4' },
+    { src: '/assets/gallery/20260906/08.jpeg', caption: '泰国清迈大泉出生 - 1992.4' },
+    { src: '/assets/gallery/20260820/05.jpeg', caption: '香港假日酒店' },
+    { src: '/assets/gallery/20260820/4.jpg', caption: '北京八达岭 - 1990' },
+    { src: '/assets/gallery/20260906/09.jpeg', caption: '"边城风光 86年6图鹅8日于泰缅边境"' },
+
+    /* 伊拉克 */
+    { src: '/assets/gallery/4 Medium.jpeg', caption: '伊拉克毕业答辩1' },
+    { src: '/assets/gallery/5 Medium.jpeg', caption: '伊拉克毕业答辩2' },
+    { src: '/assets/gallery/2 Medium.jpeg', caption: '瑞士出差 - 1987' },
+    { src: '/assets/gallery/3 Medium.jpeg', caption: '"飞行中 87年10月30日"' },
+    { src: '/assets/gallery/20260906/06.jpeg', caption: '"87年3月20日于日内瓦街头"' },
+    { src: '/assets/gallery/20260906/07.jpeg', caption: '"87年3月12日在苏黎世爱舍维斯公司检查叶型"' },
+
+    /* 大学 */
+    { src: '/assets/gallery/1 Medium.jpeg', caption: '清华大学本科期间' },
+
+    /* 小时候 */
+    { src: '/assets/gallery/20260820/2.jpg', caption: '' },
+    { src: '/assets/gallery/20260820/3.jpg', caption: '' },
+    { src: '/assets/gallery/20260820/1.jpg', caption: '' },
 
   ]), 'json', 'published');
 };
