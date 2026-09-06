@@ -92,17 +92,17 @@ const seedEditorial = () => {
     /* 海口 */
     { src: '/assets/gallery/20260820/5.jpg', caption: '海洋礼赞号 - 2016.08.06' },
     { src: '/assets/gallery/20260820/7.jpg', caption: '北京北海公园 - 2008.11.09' },
-    { src: '/assets/gallery/20260820/01.jpeg', caption: '海南海口于安仔 - 2002' },
+    { src: '/assets/gallery/20260906/01.jpeg', caption: '海南海口与安仔 - 2002' },
     /* { src: '/assets/gallery/8 Medium.jpeg', caption: '北京清华大学 - 1999.04.25' }, */
     { src: '/assets/gallery/20260820/6.jpg', caption: '海南三亚 - 1998.04.04' },
     { src: '/assets/gallery/6 Medium.jpeg', caption: '在海口万达包装1' },
     { src: '/assets/gallery/7 Medium.jpeg', caption: '在海口万达包装2' },
 
     /* 泰国 */
-    { src: '/assets/gallery/20260820/02.jpeg', caption: '泰国曼谷演奏二胡 - 1994.03.05' },
-    { src: '/assets/gallery/20260820/04.jpeg', caption: '泰国曼谷谁工厂 - 1992.4' },
+    { src: '/assets/gallery/20260906/02.jpeg', caption: '泰国曼谷演奏二胡 - 1994.03.05' },
+    { src: '/assets/gallery/20260906/04.jpeg', caption: '泰国曼谷谁工厂 - 1992.4' },
     { src: '/assets/gallery/20260906/08.jpeg', caption: '泰国清迈大泉出生 - 1992.4' },
-    { src: '/assets/gallery/20260820/05.jpeg', caption: '香港假日酒店' },
+    { src: '/assets/gallery/20260906/05.jpeg', caption: '香港假日酒店' },
     { src: '/assets/gallery/20260820/4.jpg', caption: '北京八达岭 - 1990' },
     { src: '/assets/gallery/20260906/09.jpeg', caption: '"边城风光 86年6图鹅8日于泰缅边境"' },
 
