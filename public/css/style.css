@@ -127,7 +127,8 @@ img{max-width:100%;display:block}
 }
 
 /* About */
-.about-body p{margin-bottom:1.1rem;color:var(--ink-soft)}
+.about-body{font-family:var(--serif)}
+.about-body p{margin-bottom:1.1rem;color:var(--ink-soft);text-indent:2em}
 .about-facts{
   margin-top:1.2rem;padding:1.2rem 1.4rem;
   background:#f6f3ec;border-left:3px solid var(--accent);
