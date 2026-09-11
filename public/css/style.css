@@ -307,6 +307,7 @@ body.gallery-browsing .gallery-section-nav{display:flex}
 @media(max-width:900px) and (prefers-reduced-motion:no-preference){
   .g-item.reveal-pending{opacity:0;transform:translateY(24px)}
   .g-item.reveal-visible{animation:polaroid-reveal .7s cubic-bezier(.22,1,.36,1) both}
+  .g-item.reveal-settled{opacity:1;transform:none;animation:none}
 }
 @keyframes polaroid-reveal{
   from{opacity:0;transform:translateY(24px)}

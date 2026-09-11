@@ -1,6 +1,10 @@
 /* Public memorial page */
 (function () {
   const $ = (s) => document.querySelector(s);
+  let gallerySections = [];
+  let galleryReady = false;
+  let activeGalleryTarget = null;
+  let cancelGalleryJump = () => {};
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
@@ -20,7 +24,7 @@
     }
     // site settings + theme
     let site;
-    try { site = await fetchJSON('/api/site'); } catch (e) { return; }
+    try { site = await fetchJSON('/api/site'); } catch (e) { site = {}; }
     if (site.title) document.title = site.title + ' | 网上纪念';
     if (site.hero_title) $('#heroTitle').textContent = site.hero_title;
     if (site.hero_sub) $('#heroSub').textContent = site.hero_sub;
@@ -68,12 +72,13 @@
       const groups = [...new Set([...(sec.gallerySections || []), ...sec.gallery.map(it => it.group || '其他')])];
       gGrid.innerHTML = sec.gallery.map((it, i) => `
         <div class="g-item" id="gallery-photo-${i}" data-group="${esc(it.group || '其他')}" style="--gallery-order:${groups.indexOf(it.group || '其他')}" onclick="window.__lightbox('${esc(it.src)}')">
-          <img src="${esc(it.src)}" alt="${esc(it.caption)}" ${it.width > 0 && it.height > 0 ? `width="${Number(it.width)}" height="${Number(it.height)}"` : ''} loading="lazy" onerror="this.src='/assets/placeholder.svg'">
+          <img src="${esc(it.src)}" alt="${esc(it.caption)}" ${it.width > 0 && it.height > 0 ? `width="${Number(it.width)}" height="${Number(it.height)}" style="aspect-ratio:${Number(it.width)} / ${Number(it.height)}"` : ''} loading="lazy" onerror="this.src='/assets/placeholder.svg'">
           <div class="g-cap">${esc(it.caption)}</div>
         </div>`).join('');
       initGalleryReveal(gGrid);
       initGalleryFocus(gGrid, groups);
-      if (location.hash.startsWith('#gallery/')) followLocation();
+      galleryReady = true;
+      if (/^#gallery(?:\/|-\d+$)/.test(location.hash)) followLocation();
     } else if (gGrid) {
       gGrid.innerHTML = '<p style="color:#a89f91">相册内容准备中，敬请期待。</p>';
     }
@@ -89,12 +94,13 @@
     const cards = [...grid.querySelectorAll('.g-item')];
     const sections = groups.map(name => ({ name, card: cards.find(card => card.dataset.group === name) }))
       .filter(section => section.card);
+    gallerySections = sections;
     if (!sections.length) return;
     const nav = document.createElement('nav');
     nav.className = 'gallery-section-nav';
     nav.setAttribute('aria-label', '相册分组');
-    nav.innerHTML = sections.map(section =>
-      `<a href="#gallery/${encodeURIComponent(section.name)}">${esc(section.name)}</a>`).join('');
+    nav.innerHTML = sections.map((section, index) =>
+      `<a href="#gallery-${index + 1}">${esc(section.name)}</a>`).join('');
     header.appendChild(nav);
     const links = [...nav.querySelectorAll('a')];
     let active = -1;
@@ -107,7 +113,7 @@
         return;
       }
       const bounds = grid.getBoundingClientRect();
-      const watching = bounds.top < window.innerHeight * .7 &&
+      const watching = !!activeGalleryTarget || bounds.top < window.innerHeight * .7 &&
         bounds.bottom > $('.topnav-inner').getBoundingClientRect().bottom + 60;
       document.body.classList.toggle('gallery-browsing', watching);
       document.body.classList.toggle('gallery-focus', mobile.matches && watching);
@@ -250,26 +256,94 @@
   document.querySelectorAll('.topnav-links a[href^="#"]').forEach(a =>
     a.addEventListener('click', () => activateTab(a.getAttribute('href').slice(1))));
 
+  function jumpToGalleryCard(card) {
+    cancelGalleryJump();
+    activeGalleryTarget = card;
+    let cancelled = false;
+    let frame = 0;
+    let observer;
+    const removers = [];
+    // A reveal transform must not shift the anchor we measure.
+    card.classList.add('reveal-settled');
+    document.body.classList.add('gallery-browsing');
+    document.body.classList.toggle('gallery-focus', window.matchMedia('(max-width: 900px)').matches);
+    function align() {
+      frame = 0;
+      if (cancelled) return;
+      const offset = $('.topnav').getBoundingClientRect().bottom + 16;
+      document.documentElement.style.setProperty('--gallery-scroll-offset', `${offset}px`);
+      const delta = card.getBoundingClientRect().top - offset;
+      if (Math.abs(delta) > 1) window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+    }
+    function schedule() {
+      if (!cancelled && !frame) frame = requestAnimationFrame(align);
+    }
+    function cancel() {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      if (observer) observer.disconnect();
+      removers.forEach(remove => remove());
+      if (activeGalleryTarget === card) activeGalleryTarget = null;
+    }
+    cancelGalleryJump = cancel;
+    // Never pull the reader back after they start scrolling or navigating.
+    for (const type of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+      const stop = event => {
+        if (type !== 'keydown' || ['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) cancel();
+      };
+      window.addEventListener(type, stop, { passive: true });
+      removers.push(() => window.removeEventListener(type, stop));
+    }
+    if ('ResizeObserver' in window) {
+      observer = new ResizeObserver(schedule);
+      observer.observe($('#galleryGrid'));
+      observer.observe($('.topnav'));
+    }
+    // Known image ratios reserve their space before lazy loading. Older entries
+    // without dimensions must load before their preceding layout is stable.
+    const targetOrder = Number(card.style.getPropertyValue('--gallery-order'));
+    const pendingImages = [...document.querySelectorAll('#galleryGrid .g-item')]
+      .filter(photo => Number(photo.style.getPropertyValue('--gallery-order')) <= targetOrder)
+      .map(photo => photo.querySelector('img'))
+      .filter(img => !img.complete && !(Number(img.getAttribute('width')) > 0 && Number(img.getAttribute('height')) > 0));
+    const ready = pendingImages.map(img => new Promise(resolve => {
+      const done = () => { img.removeEventListener('load', done); img.removeEventListener('error', done); resolve(); };
+      img.addEventListener('load', done);
+      img.addEventListener('error', done);
+      removers.push(done);
+      img.loading = 'eager';
+      if (img.complete) done();
+    }));
+    align();
+    ready.push(document.fonts ? document.fonts.ready : Promise.resolve());
+    Promise.allSettled(ready).then(() => {
+      if (cancelled) return;
+      frame = requestAnimationFrame(() => {
+        align();
+        if (!cancelled) frame = requestAnimationFrame(() => { align(); cancel(); });
+      });
+    });
+  }
+
   function followLocation() {
+    cancelGalleryJump();
     let hash;
     try { hash = decodeURIComponent(location.hash.slice(1)); }
     catch { return; }
-    if (hash.startsWith('gallery/')) {
+    const numberedSection = /^gallery-(\d+)$/.exec(hash);
+    if (hash.startsWith('gallery/') || numberedSection) {
       activateTab('gallery', false);
+      if (!galleryReady) return;
       const group = hash.slice('gallery/'.length);
-      const card = [...document.querySelectorAll('#galleryGrid .g-item')]
-        .find(photo => photo.dataset.group === group);
+      const card = numberedSection
+        ? gallerySections[Number(numberedSection[1]) - 1]?.card
+        : [...document.querySelectorAll('#galleryGrid .g-item')].find(photo => photo.dataset.group === group);
       if (!card) {
-        // Gallery data may still be loading; init retries after rendering it.
+        // Unknown section numbers fall back to the gallery heading.
         $('#panel-gallery').scrollIntoView({ block: 'start' });
         return;
       }
-      document.body.classList.add('gallery-browsing');
-      document.body.classList.toggle('gallery-focus', window.matchMedia('(max-width: 900px)').matches);
-      document.documentElement.style.setProperty('--gallery-scroll-offset',
-        `${$('.topnav').getBoundingClientRect().bottom + 16}px`);
-      card.scrollIntoView({ block: 'start', behavior:
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      jumpToGalleryCard(card);
     } else if (['about','timeline','memorywall','gallery'].includes(hash)) {
       activateTab(hash);
     } else if (!hash) {

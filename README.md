@@ -109,4 +109,4 @@ sessions, real password hashing with per-user salt, secret key management).
 
 ## Direct gallery links
 
-Open `/#gallery` for the gallery, or `/#gallery/清华` (replace 清华 with a gallery group name) to open a specific photo group. Section-bar links update the URL and support copying, refresh, new tabs, and browser Back/Forward on desktop and mobile. Chinese group names may appear URL-encoded when copied.
+Open `/#gallery` for the gallery or `/#gallery-4` for the fourth photo group (currently 伊拉克). Numbers start at 1 and follow the visible section-bar order. Named links such as `/#gallery/清华` also continue to work. Section-bar links update the URL and support copying, refresh, new tabs, and browser Back/Forward on desktop and mobile. Chinese group names may appear URL-encoded when copied.
