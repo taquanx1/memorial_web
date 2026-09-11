@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/admin.css?v=2">
 </head>
 <body data-page="admin">
 
@@ -54,8 +54,35 @@
         <div class="stat"><b id="stViews">0</b><span>主页浏览量</span></div>
         <div class="stat"><b id="stPending">0</b><span>待审核留言</span></div>
       </div>
-      <h3>页面访问分布</h3>
-      <div class="route-list" id="routeList"></div>
+      <div class="report-toolbar">
+        <label for="trafficDate">查看日期（北京时间）</label>
+        <input type="date" id="trafficDate">
+        <button type="button" class="btn-ghost" id="trafficToday">今天</button>
+        <button type="button" class="btn-ghost" id="trafficRefresh">刷新</button>
+      </div>
+      <p id="trafficSummary" class="tab-hint" aria-live="polite"></p>
+      <p id="trafficError" class="form-msg err" role="alert"></p>
+      <section class="traffic-map-card" aria-labelledby="chinaMapHeading">
+        <h3 id="chinaMapHeading">中国大陆 · 城市访问热力图</h3>
+        <p class="tab-hint">圆点越大、颜色越深，访问越多。选择城市查看访问次数。</p>
+        <div id="chinaMap" class="china-map" aria-busy="true"></div>
+        <div class="map-legend"><span>少</span><i></i><span>多</span></div>
+        <p id="mapDetail" class="map-detail" aria-live="polite">暂无城市访问数据</p>
+        <p class="map-source">底图：Natural Earth · 定位：MaxMind GeoLite（IP 估算，非精确位置）</p>
+      </section>
+      <h3>中国大陆城市访问明细</h3>
+      <div class="table-scroll"><table id="mainlandTable">
+        <thead><tr><th>城市</th><th>访问次数</th></tr></thead><tbody></tbody>
+      </table></div>
+      <h3>中国大陆以外的访问</h3>
+      <div class="table-scroll"><table id="outsideTable">
+        <thead><tr><th>国家 / 地区</th><th>城市</th><th>访问次数</th></tr></thead><tbody></tbody>
+      </table></div>
+      <h3>每日访问来源排行 · 国家 / 地区、城市</h3>
+      <div class="table-scroll"><table id="originTable">
+        <thead><tr><th>排名</th><th>国家 / 地区</th><th>城市</th><th>访问次数</th><th>当日占比</th></tr></thead><tbody></tbody>
+      </table></div>
+      <p class="tab-hint">仅统计主页与「写下思念」页面访问，不含图片、脚本或后台请求。历史位置由留存 IP 估算；本地或无法定位的访问显示为未知。</p>
       <h3>最近访问记录</h3>
       <div class="table-scroll"><table id="trafficTable">
         <thead><tr><th>时间</th><th>路径</th><th>IP</th><th>设备</th></tr></thead>
@@ -161,7 +188,11 @@
     <!-- Review -->
     <section class="tab-panel" id="tab-review">
       <h2>留言审核（来自「留下思念」）</h2>
-      <p class="tab-hint">所有用户提交的思念将进入此队列，您可以选择发布或拒绝。</p>
+      <p class="tab-hint">自动审核关闭时，新留言等待审核；开启后，新留言提交即发布。已有待审核留言保持原状态。</p>
+      <div class="moderation-setting">
+        <button type="button" id="autoApproveBtn" class="auto-approve" role="switch" aria-checked="false" disabled>Auto-approve · 关闭</button>
+        <span id="moderationStatus" role="status">正在读取设置…</span>
+      </div>
       <div class="filter-row">
         <button class="chip active" data-f="all">全部</button>
         <button class="chip" data-f="pending">待审核</button>
@@ -173,6 +204,6 @@
   </main>
 </div>
 
-<script src="/js/admin.js?v=2"></script>
+<script src="/js/admin.js?v=3"></script>
 </body>
 </html>

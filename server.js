@@ -4,11 +4,12 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const { DatabaseSync } = require('node:sqlite');
+const { beijingDate, dayRange, locate, initTraffic, trafficReport } = require('./lib/traffic');
 
 const PORT = process.env.PORT || 8080;
 const ROOT = __dirname;
 const PUB = path.join(ROOT, 'public');
-const DATA = path.join(ROOT, 'data');
+const DATA = process.env.DATA_DIR || path.join(ROOT, 'data');
 if (!fs.existsSync(DATA)) fs.mkdirSync(DATA, { recursive: true });
 
 /* ---------------- Database ---------------- */
@@ -51,8 +52,11 @@ CREATE TABLE IF NOT EXISTS traffic (
 );
 `);
 
+initTraffic(db);
+
 /* ---- seed settings defaults ---- */
 const defaults = {
+  auto_approve: 'false',
   view_count: '0',
   maintained_by: '纪念网站管理团队',
   theme: JSON.stringify({ tone: 'light', accent: '#b9a15f', font: 'serif' }),
@@ -200,10 +204,11 @@ const upload = multer({
 
 /* ---------------- helpers ---------------- */
 function logTraffic(req, route) {
-  try {
-    db.prepare('INSERT INTO traffic (route, ip, ua) VALUES (?,?,?)')
-      .run(route || req.path, req.ip || '', (req.get('user-agent') || '').slice(0, 200));
-  } catch (e) {}
+  const ip = req.ip || '';
+  const g = locate(ip);
+  db.prepare(`INSERT INTO traffic (route,ip,ua,country,region,city,latitude,longitude,geo_status)
+    VALUES (?,?,?,?,?,?,?,?,?)`).run(route || req.path, ip, (req.get('user-agent') || '').slice(0,200),
+      g.country, g.region, g.city, g.latitude, g.longitude, g.geo_status);
 }
 function bumpViews() {
   db.prepare("UPDATE settings SET value = CAST(value AS INTEGER)+1 WHERE key='view_count'").run();
@@ -212,7 +217,7 @@ function bumpViews() {
 
 /* ---------------- app ---------------- */
 const app = express();
-app.set('trust proxy', true);
+app.set('trust proxy', process.env.TRUST_PROXY || 'loopback');
 app.disable('x-powered-by');
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -224,10 +229,6 @@ app.use((req, res, next) => {
     logTraffic(req, 'home');
   } else if (req.method === 'GET' && req.path === '/memo') {
     logTraffic(req, 'memo');
-  } else if (req.path.startsWith('/api') || req.path.startsWith('/admin-api')) {
-    /* skip */
-  } else if (req.method === 'GET') {
-    logTraffic(req, req.path);
   }
   next();
 });
@@ -276,10 +277,11 @@ app.get('/api/memories', (req, res) => {
 app.post('/api/memories', (req, res) => {
   const { name, text, photos } = req.body || {};
   if (!text || !String(text).trim()) return res.status(400).json({ error: '内容不能为空' });
+  const status = db.prepare("SELECT value FROM settings WHERE key='auto_approve'").get().value === 'true' ? 'published' : 'pending';
   db.prepare('INSERT INTO memories (name,text,photos,status,sync_flag,ip) VALUES (?,?,?,?,?,?)')
     .run(String(name||'').slice(0,50), String(text).slice(0,5000),
-         JSON.stringify(Array.isArray(photos)?photos:[]), 'pending', 0, req.ip||'');
-  res.status(201).json({ ok: true, message: '已收到，处理中' });
+         JSON.stringify(Array.isArray(photos)?photos:[]), status, 0, req.ip||'');
+  res.status(201).json({ ok: true, status, message: status === 'published' ? '您的思念已发布，感谢您的留言。' : '您的思念已提交，等待管理员审核。' });
 });
 app.post('/api/memories/photo', upload.single('photo'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: '未上传文件' });
@@ -346,12 +348,9 @@ app.post('/admin-api/settings', requireAuth, (req, res) => {
 
 /* 3. traffic + activity monitoring */
 app.get('/admin-api/traffic', requireAuth, (req, res) => {
-  const total = db.prepare('SELECT COUNT(*) c FROM traffic').get().c;
-  const today = db.prepare("SELECT COUNT(*) c FROM traffic WHERE ts >= strftime('%s','now','start of day')").get().c;
-  const byRoute = db.prepare('SELECT route, COUNT(*) c FROM traffic GROUP BY route ORDER BY c DESC').all();
-  const recent = db.prepare('SELECT * FROM traffic ORDER BY id DESC LIMIT 50').all();
-  const views = db.prepare("SELECT value v FROM settings WHERE key='view_count'").get().v;
-  res.json({ total, today, views, byRoute, recent });
+  const date = req.query.date === undefined ? beijingDate() : req.query.date;
+  if (!dayRange(date) || date > beijingDate()) return res.status(400).json({ error: '请选择有效的历史日期或今天' });
+  res.json(trafficReport(db, date));
 });
 app.get('/admin-api/activity', requireAuth, (req, res) => {
   const rows = db.prepare('SELECT * FROM memories ORDER BY id DESC LIMIT 30').all();
@@ -379,6 +378,14 @@ app.delete('/admin-api/content/:id', requireAuth, (req, res) => {
 });
 
 /* 5. review memory-wall content (publish/reject) */
+app.get('/admin-api/moderation', requireAuth, (req, res) => {
+  res.json({ autoApprove: db.prepare("SELECT value FROM settings WHERE key='auto_approve'").get().value === 'true' });
+});
+app.put('/admin-api/moderation', requireAuth, (req, res) => {
+  if (typeof req.body?.autoApprove !== 'boolean') return res.status(400).json({ error: '开关值必须为 true 或 false' });
+  db.prepare("UPDATE settings SET value=? WHERE key='auto_approve'").run(String(req.body.autoApprove));
+  res.json({ ok: true, autoApprove: req.body.autoApprove });
+});
 app.get('/admin-api/memories/all', requireAuth, (req, res) => {
   const rows = db.prepare('SELECT * FROM memories ORDER BY id DESC LIMIT 200').all();
   res.json({ memories: rows });
@@ -410,6 +417,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: '服务器错误' });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('Memorial site listening on http://0.0.0.0:' + PORT);
-});
+if (require.main === module) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log('Memorial site listening on http://0.0.0.0:' + PORT);
+  });
+}
+module.exports = { app, db };

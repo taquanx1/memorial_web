@@ -53,9 +53,27 @@ button{cursor:pointer;font-family:var(--sans)}
 .stat b{display:block;font-size:2rem;color:var(--accent-dark);font-weight:700}
 .stat span{color:var(--ink-soft);font-size:.85rem}
 
-.route-list{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem}
-.route-list .rg{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:.4rem .9rem;font-size:.85rem}
-.route-list .rg b{color:var(--accent-dark)}
+.report-toolbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:1rem 0}
+.report-toolbar input{padding:.6rem;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.traffic-map-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem}
+.traffic-map-card h3{margin:0 0 .4rem}
+.china-map{width:100%;min-height:240px;background:linear-gradient(150deg,#f8f7fc,#eeedf6);border-radius:10px;overflow:hidden}
+.china-map svg{display:block;width:100%;max-height:600px}
+.china-land{fill:#dedbe9;stroke:#a6a0b9;stroke-width:1.2}
+.city-marker{cursor:pointer;outline:none}
+.city-marker circle{stroke:#fff;stroke-width:1.5}
+.city-marker text{font-size:11px;fill:#33264f;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.city-marker:hover circle,.city-marker:focus circle{stroke:#241142;stroke-width:3}
+.city-marker:hover text,.city-marker:focus text{font-weight:700}
+.map-legend{display:flex;align-items:center;justify-content:center;gap:.6rem;font-size:.8rem;color:var(--ink-soft);margin:.8rem}
+.map-legend i{height:9px;width:130px;border-radius:10px;background:linear-gradient(90deg,#d1b0ed,#9d65cf,#61258f)}
+.map-detail{font-size:.9rem;min-height:1.5em;text-align:center}
+.map-source{font-size:.75rem;color:var(--ink-soft);margin-top:.8rem;text-align:center}
+.moderation-setting{display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin:1rem 0 1.5rem}
+.auto-approve{padding:.65rem 1rem;border:1px solid var(--line);border-radius:24px;background:#fff;color:var(--ink);font-size:.95rem}
+.auto-approve[aria-checked="true"]{background:#e5f5e8;color:#176c2f;border-color:#72b985}
+button:disabled{cursor:wait;opacity:.6}
+[hidden]{display:none!important}
 
 .table-scroll{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:560px}

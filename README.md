@@ -46,10 +46,10 @@ Admin features:
 2. Change design/layout of any section (title texts, hero, accent color,
    light/dark tone, serif/sans font, maintained-by, about body) — saved to DB,
    applied live on the public page
-3. Site traffic & activity monitoring (totals, today, per-page distribution,
-   recent requests, live view count)
+3. Site traffic & activity monitoring (totals, today, mainland China city map,
+   daily country/city rankings, visits outside mainland China, recent visits)
 4. Add content to any section, published immediately (bypasses review)
-5. Review queue for all 「留下思念」submissions — publish or reject
+5. Review queue for 「留下思念」submissions — publish or reject; optional Auto-approve
 
 ## CDN readiness
 - Static assets (`/assets/*`) served `immutable, max-age=30d`
@@ -62,6 +62,46 @@ Admin features:
 SQLite DB lives at `data/memorial.db`. Admin passwords are SHA-256 hashed with a
 static salt. Sessions are in-memory bearer tokens (12h) stored in localStorage.
 Photos upload to `public/uploads/`.
+
+## Traffic geography and daily reports
+
+The admin dashboard's calendar filters the city map, mainland/non-mainland tables,
+origin rankings, and recent visits to a single day in **Asia/Shanghai (UTC+8)**.
+Visit counts cover `/` and `/memo`; images, scripts, APIs, and admin requests do not
+count as public visits. These are page visits, not deduplicated people.
+
+Locations are estimated locally from visitor IPs with
+[GeoIP-lite / MaxMind GeoLite](https://github.com/geoip-lite/node-geoip).
+Visitor IPs are not sent to a third-party location API. Existing traffic rows are
+migrated on startup and their stored IPs are looked up without changing dates.
+Historical locations therefore reflect the installed database, not a verified
+location at the time of the visit. Private/local/unknown addresses remain unknown;
+country-only results appear in tables without inventing city coordinates. `CN`
+is plotted on the mainland map; other known country/region codes, including
+`HK`, `MO`, and `TW`, appear in the table outside mainland China.
+
+The installed database supplies initial lookups. Keep it up to date using the
+package's documented updater with your own MaxMind license key, then restart
+the server. The locally bundled map is extracted from
+[Natural Earth 1:110m countries](https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_admin_0_countries.geojson),
+public-domain data. This product includes GeoLite data created by MaxMind,
+available from [MaxMind](https://www.maxmind.com/).
+
+Only loopback reverse proxies (such as a local Cloudflare Tunnel) are trusted by
+default. If the reverse proxy runs on another host, set `TRUST_PROXY` to its IP or
+CIDR so the application can use the forwarded visitor IP. The proxy should
+overwrite incoming forwarding headers. Do not configure trust for arbitrary clients.
+
+## Automatic moderation
+
+In 留言审核, **Auto-approve** defaults to off. When enabled, new submissions are
+published immediately. Turning it off restores manual review for future submissions.
+The setting is saved in SQLite and survives restarts. Existing pending or rejected
+messages are not changed by the switch. Only authenticated admins can change it.
+
+Run `npm run test:admin` with Node 24 to test traffic migration, reporting, proxy
+lookups, and moderation in an isolated temporary database. `DATA_DIR` can override
+the database directory for testing; it defaults to `data/`.
 
 Security note: this is a functional demo. For a production deployment behind a
 public hostname, harden further (rate limiting, CSRF, HTTPS-only cookie

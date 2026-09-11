@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --test test/smoke.test.js"
+    "test": "node --test test/smoke.test.js",
+    "test:admin": "node --test test/admin-features.test.js"
   },
+  "engines": { "node": ">=24" },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "express": "^5.2.1",
+    "geoip-lite": "^2.0.3",
     "multer": "^2.2.0"
   }
 }

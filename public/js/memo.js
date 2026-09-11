@@ -76,6 +76,7 @@
       });
       const d = await r.json();
       if (d.ok) {
+        $('#submissionMessage').textContent = d.message || '您的思念已成功提交，感谢您的留言。';
         $('#doneOverlay').classList.add('show');
       } else {
         alert(d.error || '提交失败，请重试');

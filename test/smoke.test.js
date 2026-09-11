@@ -138,5 +138,5 @@ test('settings read + write; traffic stats', async () => {
   const w = await j('/admin-api/settings', { method: 'POST', body: { site_title: '纪念 · 永怀' } });
   assert.strictEqual(w.d.ok, true);
   const t = await j('/admin-api/traffic');
-  assert.ok(typeof t.d.total === 'number' && Array.isArray(t.d.byRoute) && Array.isArray(t.d.recent));
+  assert.ok(typeof t.d.total === 'number' && Array.isArray(t.d.origins) && Array.isArray(t.d.recent));
 });
