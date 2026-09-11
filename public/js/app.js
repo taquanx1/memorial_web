@@ -131,6 +131,8 @@
 
   /* ---------- Section navigation (left nav, like original) ---------- */
   function activateTab(name) {
+    const target = name === 'timeline' ? $('#timelineTitle') : $(`#panel-${name}`);
+    if (name === 'timeline') name = 'about';
     const link = document.querySelector(`.sect-link[data-tab="${name}"]`);
     const panel = document.querySelector(`.sect-panel[data-panel="${name}"]`);
     if (!link || !panel) return;
@@ -141,10 +143,10 @@
       p.hidden = !on;
       p.setAttribute('aria-hidden', on ? 'false' : 'true');
     });
-    if (history.replaceState) history.replaceState(null, '', '#' + name);
+    if (target) target.scrollIntoView({ block: 'start' });
   }
   document.querySelectorAll('.sect-link').forEach(l => l.addEventListener('click', (e) => {
-    // force switch via JS; allow default hash update
+    // Switch the visible panel while preserving normal hash navigation.
     activateTab(l.dataset.tab);
   }));
   document.querySelectorAll('.topnav-links a[href^="#"]').forEach(a =>
