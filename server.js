@@ -97,7 +97,7 @@ const galleryPhotos = [
     /* { group: '伊拉克', width: 640, height: 445, src: '/assets/gallery/4 Medium.jpeg', caption: '伊拉克毕业答辩1' }, */
 
     /* 泰国 */
-    { group: '泰国', width: 640, height: 460, src: '/assets/gallery/20260906/09.jpeg', caption: '"边城风光 86年6图鹅8日于泰缅边境"' },
+    { group: '泰国', width: 640, height: 460, src: '/assets/gallery/20260906/09.jpeg', caption: '"边城风光 86年6月8日于泰缅边境"' },
     { group: '泰国', width: 640, height: 461, src: '/assets/gallery/3 Medium.jpeg', caption: '"飞行中 87年10月30日"' },
     /* { group: '泰国', width: 1289, height: 855, src: '/assets/gallery/20260820/4.jpg', caption: '北京八达岭 - 1990' }, */
     /* { group: '泰国', width: 640, height: 438, src: '/assets/gallery/20260906/05.jpeg', caption: '香港假日酒店' }, */
