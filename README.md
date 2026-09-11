@@ -66,3 +66,7 @@ Photos upload to `public/uploads/`.
 Security note: this is a functional demo. For a production deployment behind a
 public hostname, harden further (rate limiting, CSRF, HTTPS-only cookie
 sessions, real password hashing with per-user salt, secret key management).
+
+## Direct gallery links
+
+Open `/#gallery` for the gallery, or `/#gallery/清华` (replace 清华 with a gallery group name) to open a specific photo group. Section-bar links update the URL and support copying, refresh, new tabs, and browser Back/Forward on desktop and mobile. Chinese group names may appear URL-encoded when copied.

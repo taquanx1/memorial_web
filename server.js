@@ -70,6 +70,58 @@ for (const [k, v] of Object.entries(defaults)) {
   db.prepare('INSERT OR IGNORE INTO settings (key,value) VALUES (?,?)').run(k, v);
 }
 
+/* Gallery groups and image dimensions, shared by seeding and the API. */
+const galleryPhotos = [
+
+    /* 青少年 */
+    { group: '青少年', width: 2207, height: 1420, src: '/assets/gallery/20260820/1.jpg', caption: '一岁时' },
+    { group: '青少年', width: 1171, height: 1372, src: '/assets/gallery/20260820/3.jpg', caption: '三岁时' },
+    { group: '青少年', width: 1634, height: 1202, src: '/assets/gallery/20260820/2.jpg', caption: '北京中山公园 - 1974' },
+    { group: '大学', width: 520, height: 802, src: '/assets/sectional/青少年/17岁.jpg', caption: '高中时 - 1980' },
+
+    /* 清华 */
+    { group: '清华', width: 2296, height: 3424, src: '/assets/sectional/大学/与哥哥在清华.jpg', caption: '与哥哥在清华' },
+    { group: '清华', width: 860, height: 611, src: '/assets/sectional/大学/301全家福.jpg', caption: '"301全家福"' },
+    { group: '清华', width: 810, height: 581, src: '/assets/sectional/大学/与同学在大礼堂.jpg', caption: '与同学在大礼堂' },
+    { group: '清华', width: 640, height: 439, src: '/assets/gallery/1 Medium.jpeg', caption: '清华大学本科期间' },
+
+    /* 伊拉克 */
+    { group: '伊拉克', width: 640, height: 475, src: '/assets/gallery/20260906/07.jpeg', caption: '"87年3月12日在苏黎世爱舍维斯公司检查叶型"' },
+    { group: '伊拉克', width: 640, height: 448, src: '/assets/gallery/20260906/06.jpeg', caption: '"87年3月20日于日内瓦街头"' },
+    { group: '伊拉克', width: 640, height: 462, src: '/assets/gallery/2 Medium.jpeg', caption: '瑞士出差 - 1987' },
+    { group: '伊拉克', width: 640, height: 470, src: '/assets/gallery/5 Medium.jpeg', caption: '本科毕业答辩 - 伊拉克' },
+    /* { group: '伊拉克', width: 640, height: 445, src: '/assets/gallery/4 Medium.jpeg', caption: '伊拉克毕业答辩1' }, */
+
+    /* 泰国 */
+    { group: '泰国', width: 640, height: 460, src: '/assets/gallery/20260906/09.jpeg', caption: '"边城风光 86年6图鹅8日于泰缅边境"' },
+    { group: '泰国', width: 640, height: 461, src: '/assets/gallery/3 Medium.jpeg', caption: '"飞行中 87年10月30日"' },
+    /* { group: '泰国', width: 1289, height: 855, src: '/assets/gallery/20260820/4.jpg', caption: '北京八达岭 - 1990' }, */
+    /* { group: '泰国', width: 640, height: 438, src: '/assets/gallery/20260906/05.jpeg', caption: '香港假日酒店' }, */
+    { group: '泰国', width: 640, height: 466, src: '/assets/gallery/20260906/08.jpeg', caption: '泰国清迈大泉出生 - 1992.4' },
+    { group: '泰国', width: 640, height: 436, src: '/assets/gallery/20260906/04.jpeg', caption: '泰国曼谷水工厂 - 1992.4' },
+    { group: '泰国', width: 1280, height: 880, src: '/assets/sectional/泰国/曼谷、和妈、哥合影于皇宫内.jpeg', caption: '"曼谷、和妈、哥合影于皇宫内"' },
+    { group: '泰国', width: 1280, height: 853, src: '/assets/sectional/泰国/香港、1993年.jpeg', caption: '"香港、1993年"' },
+    { group: '泰国', width: 640, height: 444, src: '/assets/gallery/20260906/02.jpeg', caption: '泰国曼谷演奏二胡 - 1994.03.05' },
+
+    /* 在万达 */
+    /* { group: '海口', width: 640, height: 414, src: '/assets/gallery/6 Medium.jpeg', caption: '在海口万达包装检查工作' }, */
+    { group: '万达', width: 1280, height: 846, src: '/assets/sectional/海口/职工会、讲话1.jpeg', caption: '职工会、讲话 - 1996' },
+    { group: '万达', width: 1280, height: 880, src: '/assets/sectional/海口/1996万达联欢会、抽奖.jpeg', caption: '万达联欢会、抽奖 - 1996' },
+    { group: '万达', width: 1280, height: 852, src: '/assets/sectional/海口/工地、和颜经理等合影.jpeg', caption: '万达工厂工地' },
+    { group: '万达', width: 1132, height: 770, src: '/assets/sectional/海口/工厂、老板、王富玉.jpg', caption: '与老板、王富玉在工厂车间' },
+    { group: '万达', width: 640, height: 459, src: '/assets/gallery/7 Medium.jpeg', caption: '与大泉在海口万达 - 1998.03.28' },
+    { group: '万达', src: '/assets/sectional/海口/办公室.jpeg', caption: '在万达办公室 - 1998.11.12' },
+    { group: '万达', src: '/assets/sectional/海口/海南、龙凤酒店.jpeg', caption: '与万达同事、上司 - 2001' },
+
+    /* 海口 */
+    { group: '海口', width: 1805, height: 1470, src: '/assets/gallery/20260820/6.jpg', caption: '海南三亚 - 1998.04.04' },
+    { group: '海口', width: 640, height: 373, src: '/assets/gallery/20260906/01.jpeg', caption: '海南海口与安仔 - 2002' },
+    { group: '海口', width: 1846, height: 1318, src: '/assets/gallery/20260820/7.jpg', caption: '北京北海公园 - 2008.11.09' },
+    { group: '海口', width: 1733, height: 1334, src: '/assets/gallery/20260820/5.jpg', caption: '海洋礼赞号 - 2016.08.06' },
+
+  ];
+const galleryBySource = new Map(galleryPhotos.map(photo => [photo.src, photo]));
+
 /* seed editorial demo content (Chinese) */
 const seedEditorial = () => {
   const has = db.prepare('SELECT COUNT(*) c FROM editorial').get().c;
@@ -81,48 +133,13 @@ const seedEditorial = () => {
   ins.run('about', '曾经从事的主要社会工作有：海口市人大常委会华侨外事民族宗教工作委员会委员、海南省侨资企业协会常务理事、海南省工业经济联合会理事、海南省企业家协会会员，清华大学海南校友会秘书长等职。', 'txt', 'published');
   ins.run('about', '业余时间著有《总经理读〈道德经〉学习笔记》等文稿、书籍。', 'txt', 'published');
   ins.run('timeline', JSON.stringify([
-    { year: '1963年3月', title: '出生于北京', text: ' ' },
-    { year: '1986年7月', title: '毕业于清华大学水利工程系', text: ' ' },
-    { year: '1987年', title: '移居泰国', text: ' ' },
-    { year: '1993年', title: '移居海口', text: ' ' },
-    { year: '2016年9月', title: '病故于海口', text: ' ' },
+    { year: '1963年3月', title: '出生于北京', text:' ' },
+    { year: '1986年7月', title: '毕业于清华大学水利工程系', text:' ' },
+    { year: '1987年', title: '移居泰国', text:' ' },
+    { year: '1993年', title: '移居海口', text:' ' },
+    { year: '2016年9月', title: '病故于海口', text:' ' },
   ]), 'json', 'published');
-  ins.run('gallery', JSON.stringify([
-
-    /* 海口 */
-    { src: '/assets/gallery/20260820/5.jpg', caption: '海洋礼赞号 - 2016.08.06' },
-    { src: '/assets/gallery/20260820/7.jpg', caption: '北京北海公园 - 2008.11.09' },
-    { src: '/assets/gallery/20260906/01.jpeg', caption: '海南海口与安仔 - 2002' },
-    /* { src: '/assets/gallery/8 Medium.jpeg', caption: '北京清华大学 - 1999.04.25' }, */
-    { src: '/assets/gallery/20260820/6.jpg', caption: '海南三亚 - 1998.04.04' },
-    { src: '/assets/gallery/6 Medium.jpeg', caption: '在海口万达包装1' },
-    { src: '/assets/gallery/7 Medium.jpeg', caption: '在海口万达包装2' },
-
-    /* 泰国 */
-    { src: '/assets/gallery/20260906/02.jpeg', caption: '泰国曼谷演奏二胡 - 1994.03.05' },
-    { src: '/assets/gallery/20260906/04.jpeg', caption: '泰国曼谷谁工厂 - 1992.4' },
-    { src: '/assets/gallery/20260906/08.jpeg', caption: '泰国清迈大泉出生 - 1992.4' },
-    { src: '/assets/gallery/20260906/05.jpeg', caption: '香港假日酒店' },
-    { src: '/assets/gallery/20260820/4.jpg', caption: '北京八达岭 - 1990' },
-    { src: '/assets/gallery/20260906/09.jpeg', caption: '"边城风光 86年6图鹅8日于泰缅边境"' },
-
-    /* 伊拉克 */
-    { src: '/assets/gallery/4 Medium.jpeg', caption: '伊拉克毕业答辩1' },
-    { src: '/assets/gallery/5 Medium.jpeg', caption: '伊拉克毕业答辩2' },
-    { src: '/assets/gallery/2 Medium.jpeg', caption: '瑞士出差 - 1987' },
-    { src: '/assets/gallery/3 Medium.jpeg', caption: '"飞行中 87年10月30日"' },
-    { src: '/assets/gallery/20260906/06.jpeg', caption: '"87年3月20日于日内瓦街头"' },
-    { src: '/assets/gallery/20260906/07.jpeg', caption: '"87年3月12日在苏黎世爱舍维斯公司检查叶型"' },
-
-    /* 大学 */
-    { src: '/assets/gallery/1 Medium.jpeg', caption: '清华大学本科期间' },
-
-    /* 小时候 */
-    { src: '/assets/gallery/20260820/2.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/3.jpg', caption: '' },
-    { src: '/assets/gallery/20260820/1.jpg', caption: '' },
-
-  ]), 'json', 'published');
+  ins.run('gallery', JSON.stringify(galleryPhotos), 'json', 'published');
 };
 seedEditorial();
 
@@ -239,6 +256,16 @@ app.get('/api/sections', (req, res) => {
       out.about.push({ text: r.content });
     }
   }
+  out.gallerySections = [...new Set(galleryPhotos.map(photo => photo.group))];
+  out.gallery = out.gallery.map(photo => {
+    const original = galleryBySource.get(photo.src);
+    return {
+      ...photo,
+      group: photo.group || original?.group || '其他',
+      width: photo.width || original?.width,
+      height: photo.height || original?.height,
+    };
+  });
   res.json(out);
 });
 app.get('/api/memories', (req, res) => {

@@ -241,6 +241,7 @@ img{max-width:100%;display:block}
 }
 .topnav-cta:hover{border-color:#fff;color:#fff}
 .sect-panel,.sect-heading{scroll-margin-top:5rem}
+.gallery-section-nav{display:none}
 
 /* ---------- Bamboo watermark on light content area ---------- */
 body::before{
@@ -255,8 +256,40 @@ body::before{
 body{position:relative}
 main.wrap,.site-footer{position:relative;z-index:1}
 
+/* Shared Polaroid gallery and section navigation. */
+body.gallery-browsing .gallery-section-nav{display:flex}
+.gallery-section-nav{
+  position:relative;gap:.3rem;overflow-x:auto;overscroll-behavior-x:contain;
+  padding:.35rem .5rem;background:rgba(69,71,75,.97);border-top:1px solid #63656a;
+  box-shadow:0 6px 18px rgba(0,0,0,.3);scrollbar-width:none;
+}
+.gallery-section-nav::-webkit-scrollbar{display:none}
+.gallery-section-nav a{
+  flex:1 0 auto;min-height:40px;display:flex;align-items:center;justify-content:center;
+  padding:.35rem .65rem;border-radius:6px;color:#e0e0e2;font-size:.85rem;white-space:nowrap;
+}
+.gallery-section-nav a.active{background:#e0ddd5;color:#242528;font-weight:700}
+.gallery-section-nav a:focus-visible{outline:2px solid #e7c779;outline-offset:-2px}
+.gallery-grid{grid-template-columns:minmax(0,1fr);gap:2rem;padding:.5rem .25rem 2rem;max-width:480px;margin:0 auto}
+.g-item{
+  order:var(--gallery-order,0);scroll-margin-top:var(--gallery-scroll-offset,130px);
+  padding:12px 12px 0;border:1px solid #e8e2d8;border-radius:2px;background:#fffdf8;
+  box-shadow:0 12px 22px -10px rgba(40,32,22,.3),0 3px 6px rgba(40,32,22,.1);
+}
+.g-item img{height:auto;aspect-ratio:auto;background:transparent;transition:none}
+.g-item:hover img{transform:none}
+.g-cap{
+  position:static;min-height:4.5rem;display:flex;align-items:center;justify-content:center;
+  padding:1rem .5rem 1.25rem;background:none;color:#51483d;text-align:center;
+  font-family:var(--serif);font-size:.95rem;line-height:1.7;overflow-wrap:anywhere;
+}
+
 /* ---------- Responsive ---------- */
 @media(max-width:900px){
+  body{transition:background-color .65s ease}
+  body.gallery-focus{background-color:#252629}
+  body.gallery-focus::before{opacity:.08}
+  body.gallery-focus #galleryTitle{color:#e9dfc8}
   .layout{grid-template-columns:1fr}
   .sidebar{position:static;flex-direction:row;flex-wrap:wrap}
   .side-card{flex:1 1 220px}
@@ -268,13 +301,23 @@ main.wrap,.site-footer{position:relative;z-index:1}
   .page-layout{grid-template-columns:1fr;gap:1rem}
   .sect-nav{position:static;flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--line);padding:0 0 .6rem;gap:.4rem;overflow-x:auto}
   .sect-link{white-space:nowrap;font-size:.92rem;padding:.45rem .7rem}
+
+}
+@media(max-width:900px) and (prefers-reduced-motion:no-preference){
+  .g-item.reveal-pending{opacity:0;transform:translateY(24px)}
+  .g-item.reveal-visible{animation:polaroid-reveal .7s cubic-bezier(.22,1,.36,1) both}
+}
+@keyframes polaroid-reveal{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(prefers-reduced-motion:reduce){
+  body{transition:none}
 }
 @media(max-width:480px){
   .topnav-inner{gap:.35rem;padding:.4rem .5rem}
   .brand{font-size:1rem}
   .topnav-links{gap:.5rem}
   .panel{padding:1.2rem 1.1rem}
-  .gallery-grid{grid-template-columns:repeat(2,1fr)}
-  .g-item img{height:150px}
   .wall-grid{grid-template-columns:1fr}
 }
