@@ -87,6 +87,27 @@ the server. The locally bundled map is extracted from
 public-domain data. This product includes GeoLite data created by MaxMind,
 available from [MaxMind](https://www.maxmind.com/).
 
+### Filtering out bot traffic
+
+Public hostnames attract constant datacenter scanning, so the dashboard classifies
+every page visit and defaults to showing verified humans only. 访客类型 switches
+between 仅真人（已验证）, 排除已知机器人, and 全部访问; the summary line always reports
+all three counts for the day, so nothing is hidden — only filtered.
+
+A visit is classified as:
+- `bot` — the User-Agent is empty or matches a known crawler, HTTP client, or scanner.
+  These requests also stop incrementing the public 主页浏览量 counter.
+- `human` — the same IP and User-Agent went on to request what the page needs to
+  render (`/api/*`, `/js/app.js`, `/js/memo.js`, `/css/style.css`) within 120 seconds.
+  Drive-by scanners fetch the HTML and leave, so they never reach this state — which
+  catches bots that disguise themselves with a browser User-Agent.
+- `unverified` — everything else: no corroborating request, but nothing incriminating either.
+
+Visits logged before this feature existed are classified on startup from the stored
+User-Agent, and promoted to `human` where an asset request from the same client was
+already logged alongside them. Historical days will therefore show fewer verified
+humans than real ones; 排除已知机器人 is the more useful view for those dates.
+
 Only loopback reverse proxies (such as a local Cloudflare Tunnel) are trusted by
 default. If the reverse proxy runs on another host, set `TRUST_PROXY` to its IP or
 CIDR so the application can use the forwarded visitor IP. The proxy should

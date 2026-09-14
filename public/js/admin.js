@@ -81,6 +81,7 @@
   $('#trafficDate').max = chinaToday();
   const countryName = code => /^[A-Z]{2}$/.test(code || '') ? countryNames.of(code) : '未知 / 本地';
   const cityName = row => row.city || '未知城市';
+  const classLabel = value => ({ human: '真人', bot: '机器人', unverified: '未验证' })[value] || '未验证';
   const emptyRow = (columns, message) => `<tr><td colspan="${columns}" class="empty">${esc(message)}</td></tr>`;
   function mapData() {
     if (!mapDataPromise) mapDataPromise = fetch('/assets/china-mainland.geojson').then(r => {
@@ -92,12 +93,14 @@
   async function loadDashboard() {
     const request = ++dashboardRequest;
     const date = $('#trafficDate').value || chinaToday();
+    const audience = $('#trafficAudience').value || 'human';
     $('#trafficError').textContent = '';
     $('#trafficSummary').textContent = '正在读取访问数据…';
     $('#chinaMap').setAttribute('aria-busy', 'true');
     try {
       const [d, geometry] = await Promise.all([
-        api('/admin-api/traffic?date=' + encodeURIComponent(date)), mapData().catch(() => null)
+        api('/admin-api/traffic?date=' + encodeURIComponent(date) + '&audience=' + encodeURIComponent(audience)),
+        mapData().catch(() => null)
       ]);
       if (request !== dashboardRequest) return;
       if (d.error) throw new Error(d.error);
@@ -107,7 +110,8 @@
       $('#stPending').textContent = d.pending;
       $('#trafficDate').max = d.todayDate;
       $('#trafficDate').min = d.firstDate;
-      $('#trafficSummary').textContent = `${d.date} · ${d.selectedTotal} 次访问 · ${d.unknown} 次来源未知 / 本地（北京时间）`;
+      $('#trafficSummary').textContent = `${d.date} · ${d.selectedTotal} 次访问 · ${d.unknown} 次来源未知 / 本地（北京时间）` +
+        ` ｜ 当日全部：真人 ${d.breakdown.human} · 未验证 ${d.breakdown.unverified} · 机器人 ${d.breakdown.bot}`;
       $('#mainlandTable tbody').innerHTML = d.mainland.map(row =>
         `<tr><td>${esc(cityName(row))}</td><td>${row.visits}</td></tr>`).join('') || emptyRow(2, '该日暂无中国大陆访问');
       $('#outsideTable tbody').innerHTML = d.outside.map(row =>
@@ -115,7 +119,7 @@
       $('#originTable tbody').innerHTML = d.origins.map((row, index) =>
         `<tr><td>${index + 1}</td><td>${esc(countryName(row.country))}</td><td>${esc(cityName(row))}</td><td>${row.visits}</td><td>${(row.visits / d.selectedTotal * 100).toFixed(1)}%</td></tr>`).join('') || emptyRow(5, '该日暂无访问记录');
       $('#trafficTable tbody').innerHTML = d.recent.map(t =>
-        `<tr><td>${fmtDT(t.ts)}</td><td>${esc(t.route)}</td><td>${esc(t.ip)}</td><td>${esc(t.ua)}</td></tr>`).join('') || emptyRow(4, '该日暂无访问记录');
+        `<tr><td>${fmtDT(t.ts)}</td><td>${esc(t.route)}</td><td>${esc(t.ip)}</td><td>${esc(t.ua)}</td><td>${esc(classLabel(t.client_class))}</td></tr>`).join('') || emptyRow(5, '该日暂无访问记录');
       renderChinaMap(geometry, d.mainland);
     } catch (error) {
       if (request !== dashboardRequest) return;
@@ -123,7 +127,7 @@
       $('#trafficSummary').textContent = '';
       $('#chinaMap').innerHTML = '<p class="empty">访问数据加载失败</p>';
       for (const id of ['mainlandTable', 'outsideTable', 'originTable', 'trafficTable']) {
-        $('#' + id + ' tbody').innerHTML = emptyRow(id === 'originTable' ? 5 : id === 'mainlandTable' ? 2 : id === 'outsideTable' ? 3 : 4, '数据加载失败');
+        $('#' + id + ' tbody').innerHTML = emptyRow(id === 'mainlandTable' ? 2 : id === 'outsideTable' ? 3 : 5, '数据加载失败');
       }
     } finally {
       if (request === dashboardRequest) $('#chinaMap').setAttribute('aria-busy', 'false');
@@ -166,6 +170,7 @@
     });
   }
   $('#trafficDate').addEventListener('change', loadDashboard);
+  $('#trafficAudience').addEventListener('change', loadDashboard);
   $('#trafficRefresh').addEventListener('click', loadDashboard);
   $('#trafficToday').addEventListener('click', () => { $('#trafficDate').value = chinaToday(); loadDashboard(); });
 

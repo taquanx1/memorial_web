@@ -57,6 +57,12 @@
       <div class="report-toolbar">
         <label for="trafficDate">查看日期（北京时间）</label>
         <input type="date" id="trafficDate">
+        <label for="trafficAudience">访客类型</label>
+        <select id="trafficAudience">
+          <option value="human">仅真人（已验证）</option>
+          <option value="nonbot">排除已知机器人</option>
+          <option value="all">全部访问</option>
+        </select>
         <button type="button" class="btn-ghost" id="trafficToday">今天</button>
         <button type="button" class="btn-ghost" id="trafficRefresh">刷新</button>
       </div>
@@ -83,9 +89,10 @@
         <thead><tr><th>排名</th><th>国家 / 地区</th><th>城市</th><th>访问次数</th><th>当日占比</th></tr></thead><tbody></tbody>
       </table></div>
       <p class="tab-hint">仅统计主页与「写下思念」页面访问，不含图片、脚本或后台请求。历史位置由留存 IP 估算；本地或无法定位的访问显示为未知。</p>
+      <p class="tab-hint">「已验证真人」指该访客在打开页面后又加载了页面所需的脚本或数据，普通扫描程序只取走网页本身，因此不计入。启用过滤前的历史记录只能依据 User-Agent 判断。</p>
       <h3>最近访问记录</h3>
       <div class="table-scroll"><table id="trafficTable">
-        <thead><tr><th>时间</th><th>路径</th><th>IP</th><th>设备</th></tr></thead>
+        <thead><tr><th>时间</th><th>路径</th><th>IP</th><th>设备</th><th>访客类型</th></tr></thead>
         <tbody></tbody>
       </table></div>
     </section>
@@ -204,6 +211,6 @@
   </main>
 </div>
 
-<script src="/js/admin.js?v=3"></script>
+<script src="/js/admin.js?v=4"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const { DatabaseSync } = require('node:sqlite');
-const { beijingDate, dayRange, locate, initTraffic, trafficReport } = require('./lib/traffic');
+const { beijingDate, dayRange, locate, initTraffic, trafficReport, classifyClient, verifyVisit } = require('./lib/traffic');
 
 const PORT = process.env.PORT || 8080;
 const ROOT = __dirname;
@@ -223,9 +223,12 @@ const upload = multer({
 function logTraffic(req, route) {
   const ip = req.ip || '';
   const g = locate(ip);
-  db.prepare(`INSERT INTO traffic (route,ip,ua,country,region,city,latitude,longitude,geo_status)
-    VALUES (?,?,?,?,?,?,?,?,?)`).run(route || req.path, ip, (req.get('user-agent') || '').slice(0,200),
-      g.country, g.region, g.city, g.latitude, g.longitude, g.geo_status);
+  const ua = (req.get('user-agent') || '').slice(0,200);
+  const clientClass = classifyClient(ua);
+  db.prepare(`INSERT INTO traffic (route,ip,ua,country,region,city,latitude,longitude,geo_status,client_class)
+    VALUES (?,?,?,?,?,?,?,?,?,?)`).run(route || req.path, ip, ua,
+      g.country, g.region, g.city, g.latitude, g.longitude, g.geo_status, clientClass);
+  return clientClass;
 }
 function bumpViews() {
   db.prepare("UPDATE settings SET value = CAST(value AS INTEGER)+1 WHERE key='view_count'").run();
@@ -240,12 +243,18 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 /* View-count increments on page hit (public, idempotent per request) */
+// Requesting what a page needs to render marks the visit as a real browser. Drive-by
+// scanners fetch the HTML alone, so their visits stay unverified.
+const PAGE_ASSETS = new Set(['/api/site', '/api/sections', '/api/memories', '/api/views',
+  '/js/app.js', '/js/memo.js', '/css/style.css']);
 app.use((req, res, next) => {
-  if (req.method === 'GET' && req.path === '/') {
-    bumpViews();
-    logTraffic(req, 'home');
-  } else if (req.method === 'GET' && req.path === '/memo') {
+  if (req.method !== 'GET') return next();
+  if (req.path === '/') {
+    if (logTraffic(req, 'home') !== 'bot') bumpViews();
+  } else if (req.path === '/memo') {
     logTraffic(req, 'memo');
+  } else if (PAGE_ASSETS.has(req.path)) {
+    verifyVisit(db, req.ip || '', req.get('user-agent') || '');
   }
   next();
 });
@@ -367,7 +376,9 @@ app.post('/admin-api/settings', requireAuth, (req, res) => {
 app.get('/admin-api/traffic', requireAuth, (req, res) => {
   const date = req.query.date === undefined ? beijingDate() : req.query.date;
   if (!dayRange(date) || date > beijingDate()) return res.status(400).json({ error: '请选择有效的历史日期或今天' });
-  res.json(trafficReport(db, date));
+  const audience = req.query.audience === undefined ? 'human' : req.query.audience;
+  if (!['human', 'nonbot', 'all'].includes(audience)) return res.status(400).json({ error: '请选择有效的访客类型' });
+  res.json(trafficReport(db, date, audience));
 });
 app.get('/admin-api/activity', requireAuth, (req, res) => {
   const rows = db.prepare('SELECT * FROM memories ORDER BY id DESC LIMIT 30').all();
