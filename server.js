@@ -81,11 +81,11 @@ const galleryPhotos = [
     { group: '青少年', width: 2207, height: 1420, src: '/assets/gallery/20260820/1.jpg', caption: '一岁时' },
     { group: '青少年', width: 1171, height: 1372, src: '/assets/gallery/20260820/3.jpg', caption: '三岁时' },
     { group: '青少年', width: 1634, height: 1202, src: '/assets/gallery/20260820/2.jpg', caption: '北京中山公园 - 1974' },
-    { group: '大学', width: 520, height: 802, src: '/assets/sectional/青少年/17岁.jpg', caption: '高中时 - 1980' },
+    { group: '青少年', width: 520, height: 802, src: '/assets/sectional/青少年/17岁.jpg', caption: '高中时 - 1980' },
 
     /* 清华 */
     { group: '清华', width: 2296, height: 3424, src: '/assets/sectional/大学/与哥哥在清华.jpg', caption: '与哥哥在清华' },
-    { group: '清华', width: 860, height: 611, src: '/assets/sectional/大学/301全家福.jpg', caption: '"301全家福"' },
+    { group: '清华', width: 860, height: 611, src: '/assets/sectional/大学/301全家福.jpg', caption: '清华学生宿舍301全家福' },
     { group: '清华', width: 810, height: 581, src: '/assets/sectional/大学/与同学在大礼堂.jpg', caption: '与同学在大礼堂' },
     { group: '清华', width: 640, height: 439, src: '/assets/gallery/1 Medium.jpeg', caption: '清华大学本科期间' },
 
@@ -109,8 +109,12 @@ const galleryPhotos = [
 
     /* 在万达 */
     /* { group: '海口', width: 640, height: 414, src: '/assets/gallery/6 Medium.jpeg', caption: '在海口万达包装检查工作' }, */
-    { group: '万达', width: 1280, height: 846, src: '/assets/sectional/海口/职工会、讲话1.jpeg', caption: '职工会、讲话 - 1996' },
-    { group: '万达', width: 1280, height: 880, src: '/assets/sectional/海口/1996万达联欢会、抽奖.jpeg', caption: '万达联欢会、抽奖 - 1996' },
+    /* { group: '万达', width: 1280, height: 846, src: '/assets/sectional/海口/职工会、讲话1.jpeg', caption: '职工会、讲话 - 1996' }, */
+    /* { group: '万达', width: 1280, height: 880, src: '/assets/sectional/海口/1996万达联欢会、抽奖.jpeg', caption: '万达联欢会、抽奖 - 1996' }, */
+    { group: '万达', src: '/assets/gallery/20260914/在中国城举办的97联合会合影 - 1997.jpeg', caption: '在中国城举办的97联合会合影 - 1997' },
+    { group: '万达', src: '/assets/gallery/20260914/万达97联欢会抽奖 - 1997.jpeg', caption: '万达97联欢会抽奖 - 1997' },
+    /* { group: '万达', src: '/assets/gallery/20260914/万达3周年纪念会讲话 - 1997.jpeg', caption: '万达3周年纪念会讲话 - 1997' }, */
+
     { group: '万达', width: 1280, height: 852, src: '/assets/sectional/海口/工地、和颜经理等合影.jpeg', caption: '万达工厂工地' },
     { group: '万达', width: 1132, height: 770, src: '/assets/sectional/海口/工厂、老板、王富玉.jpg', caption: '与老板、王富玉在工厂车间' },
     { group: '万达', width: 640, height: 459, src: '/assets/gallery/7 Medium.jpeg', caption: '与大泉在海口万达 - 1998.03.28' },
@@ -119,8 +123,21 @@ const galleryPhotos = [
 
     /* 海口 */
     { group: '海口', width: 1805, height: 1470, src: '/assets/gallery/20260820/6.jpg', caption: '海南三亚 - 1998.04.04' },
-    { group: '海口', width: 640, height: 373, src: '/assets/gallery/20260906/01.jpeg', caption: '海南海口与安仔 - 2002' },
+    { group: '海口', src: '/assets/gallery/20260914/与安仔在海口万绿园合影 - 2001.jpeg', caption: '与安仔在海口万绿园合影 - 2001' },
+    { group: '海口', src: '/assets/gallery/20260914/与母亲、哥哥在三亚 - 2002.jpeg', caption: '与母亲、哥哥在三亚 - 2002' },
+    { group: '海口', src: '/assets/gallery/20260914/与哥哥在爷爷奶奶家拆迁现场 - 2003.jpeg', caption: '与哥哥在爷爷奶奶家拆迁现场 - 2003' },
+    { group: '海口', src: '/assets/gallery/20260914/春节期间与邻居聚餐 - 2005.jpeg', caption: '春节期间与邻居聚餐 - 2005' },
+
+    { group: '海口', src: '/assets/gallery/20260914/与老街坊朋友 - 2007.jpeg', caption: '与老街坊朋友 - 2007' },
     { group: '海口', width: 1846, height: 1318, src: '/assets/gallery/20260820/7.jpg', caption: '北京北海公园 - 2008.11.09' },
+    { group: '海口', src: '/assets/gallery/20260914/泰国曼谷大皇宫 - 2009.jpeg', caption: '泰国曼谷大皇宫 - 2009' },
+    { group: '海口', src: '/assets/gallery/20260914/与哥哥在上海城隍庙 - 2010.jpeg', caption: '与哥哥在上海城隍庙 - 2010' },
+
+    { group: '海口', src: '/assets/gallery/20260914/奶奶老家常州礼嘉桥 - 2011.jpeg', caption: '奶奶老家常州礼嘉桥 - 2011' },
+    { group: '海口', src: '/assets/gallery/20260914/法国卢瓦尔香波堡 - 2011.jpeg', caption: '法国卢瓦尔香波堡 - 2011' },
+    { group: '海口', src: '/assets/gallery/20260914/与哥哥在清华大学第三教学楼 - 2013.jpeg', caption: '与哥哥在清华大学第三教学楼 - 2013' },
+    { group: '海口', src: '/assets/gallery/20260914/与母亲在重庆磁器口 - 2015.jpeg', caption: '与母亲在重庆磁器口 - 2015' },
+    { group: '海口', src: '/assets/gallery/20260914/北京灯草胡同 - 2016.jpeg', caption: '北京灯草胡同 - 2016' },
     { group: '海口', width: 1733, height: 1334, src: '/assets/gallery/20260820/5.jpg', caption: '海洋礼赞号 - 2016.08.06' },
 
   ];
